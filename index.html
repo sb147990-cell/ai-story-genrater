@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Story Generator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#10152f,#251044);
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 750px;
+    margin: 35px auto;
+    background: #ffffff12;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid #ffffff25;
+}
+
+h1 {
+    text-align: center;
+    color: #c7a5ff;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin: 15px 0 8px;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #777;
+    background: #17172d;
+    color: white;
+    font-size: 16px;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+button {
+    padding: 13px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.generate {
+    width: 100%;
+    margin-top: 22px;
+    background: linear-gradient(90deg,#8b5cf6,#ec4899);
+    color: white;
+    font-size: 17px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.actions button {
+    background: #7045c5;
+    color: white;
+    flex: 1;
+}
+
+#result {
+    display: none;
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #11152c;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+#status {
+    text-align: center;
+    margin-top: 15px;
+    color: #d6b8ff;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>✨ AI Story Generator</h1>
+<p class="subtitle">Create amazing stories with AI Magic!</p>
+
+<label>Enter Your Story Topic</label>
+<input id="topic" placeholder="Example: A boy and a magical world">
+
+<label>Select Story Language</label>
+<select id="language">
+<option value="Hindi">Hindi</option>
+<option value="English">English</option>
+</select>
+
+<label>Select Story Category</label>
+<select id="category">
+<option>Horror</option>
+<option>Love</option>
+<option>Comedy</option>
+<option>Adventure</option>
+<option>Fantasy</option>
+<option>Mystery</option>
+<option>Friendship</option>
+</select>
+
+<label>Story Length</label>
+<select id="length">
+<option value="Short">Short Story</option>
+<option value="Medium">Medium Story</option>
+<option value="Long">Long Story</option>
+</select>
+
+<button class="generate" onclick="generateStory()">
+✨ Generate Story
+</button>
+
+<p id="status"></p>
+
+<div id="result"></div>
+
+<div class="actions" id="actions" style="display:none">
+<button onclick="copyStory()">📋 Copy</button>
+<button onclick="downloadStory()">⬇ Download</button>
+</div>
+
+</div>
+
+<script>
+
+function generateStory() {
+
+    const topic = document.getElementById("topic").value.trim();
+    const language = document.getElementById("language").value;
+    const category = document.getElementById("category").value;
+    const length = document.getElementById("length").value;
+
+    if (!topic) {
+        alert("Please enter a story topic!");
+        return;
+    }
+
+    let story = "";
+
+    const hindi = language === "Hindi";
+
+    const endings = hindi
+    ? [
+        "उस दिन उसे समझ आया कि सच्ची ताकत उसके अपने विश्वास में थी।",
+        "अंत में उसने अपनी हिम्मत से हर मुश्किल को जीत लिया।",
+        "और इस तरह उसकी जिंदगी की एक नई शुरुआत हुई।"
+      ]
+    : [
+        "That day, he discovered that true strength was inside him.",
+        "In the end, courage helped him overcome every challenge.",
+        "And so, a wonderful new chapter of life began."
+      ];
+
+    const opening = hindi
+    ? `एक समय की बात है। ${topic} से जुड़ी एक अनोखी कहानी शुरू हुई।`
+    : `Once upon a time, an extraordinary story began about ${topic}.`;
+
+    const middle = hindi
+    ? `${topic} की इस दुनिया में कई रहस्य और चुनौतियाँ थीं। रास्ते में उसे नए दोस्त मिले और कई कठिन परिस्थितियों का सामना करना पड़ा। लेकिन उसने हार नहीं मानी। उसकी हिम्मत और समझदारी ने उसे आगे बढ़ने की प्रेरणा दी।`
+    : `In the world of ${topic}, there were many mysteries and challenges. Along the way, new friends appeared and difficult situations tested their courage. But they never gave up. Their determination and wisdom helped them move forward.`;
+
+    const extra = hindi
+    ? `एक दिन अचानक सब कुछ बदल गया। उसे एक ऐसा मौका मिला जिसने उसकी पूरी दुनिया बदल दी। उसने अपने दोस्तों के साथ मिलकर एक बड़ा फैसला लिया और अपनी मंजिल की ओर बढ़ गया।`
+    : `One day, everything suddenly changed. An unexpected opportunity appeared that could transform their world. Together with their friends, they made a brave decision and moved toward their goal.`;
+
+    const paragraphs = length === "Short" ? 2 : length === "Medium" ? 3 : 5;
+
+    story = `📖 ${topic}\n\n`;
+
+    story += opening + "\n\n";
+
+    for (let i = 0; i < paragraphs; i++) {
+        story += middle + "\n\n";
+        if (i % 2 === 1) story += extra + "\n\n";
+    }
+
+    story += "🌟 " + endings[Math.floor(Math.random() * endings.length)];
+
+    document.getElementById("result").textContent = story;
+    document.getElementById("result").style.display = "block";
+    document.getElementById("actions").style.display = "flex";
+    document.getElementById("status").textContent =
+        "✅ Your story is ready! Category: " + category;
+}
+
+function copyStory() {
+    const story = document.getElementById("result").textContent;
+    navigator.clipboard.writeText(story)
+    .then(() => alert("Story copied successfully!"))
+    .catch(() => alert("Please select and copy the story manually."));
+}
+
+function downloadStory() {
+    const story = document.getElementById("result").textContent;
+    const blob = new Blob([story], {type:"text/plain;charset=utf-8"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "My-AI-Story.txt";
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+
+</script>
+
+</body>
+</html>
